@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer';
 import fs from 'fs';
 import * as dotenv from "dotenv";
+import {sendToTelegram, formatBytes} from "./service.js";
 
 dotenv.config();
 
@@ -85,6 +86,14 @@ dotenv.config();
 
         parsedData.last = lastResult
         parsedData.all.push(lastResult);
+
+        // here 1048576 is MB converting to Bytes
+        let message = `
+Остаток за месяц: ${formatBytes(lastResult.total * 1048576)}
+За сегодня использовано: ${formatBytes(lastResult.today_usage * 1048576)}
+`;
+
+       sendToTelegram(message);
 
         fs.writeFile(fileName, JSON.stringify(parsedData, null, 2), (err, result) => {
             if (err) console.log('error', err);
