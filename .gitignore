@@ -1,0 +1,7 @@
+.env
+.env.backup
+/node_modules
+/.idea
+/.vscode
+/test-pages
+screenshot.png
